@@ -1,0 +1,32 @@
+﻿@model Course
+@{
+	string title = ViewBag.Action + " Course";
+	ViewData["Title"] = title;
+}
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Edit" method="post">
+
+	<div asp-validation-summary="All" class="text-danger"></div>
+
+	<div class="mb-3">
+		<label asp-for="Name" class="form-label">Name</label>
+		<input asp-for="Name" class="form-control" />
+	</div>
+	<div class="mb-3">
+		<label asp-for="Instuctor" class="form-label">Instuctor</label>
+		<input asp-for="Instuctor" class="form-control" />
+	</div>
+	<div class="mb-3">
+		<label asp-for="Date" class="form-label">Date</label>
+		<input asp-for="Date" class="form-control" />
+	</div>
+	<div class="mb-3">
+		<label asp-for="RoomNumber" class="form-label">RoomNumber</label>
+		<input asp-for="RoomNumber" class="form-control" />
+	</div>
+
+	<input type="hidden" asp-for="Id" />
+	<button type="submit" class="btn btn-primary">Save</button>
+	<a asp-controller="Course" asp-action="All" class="btn btn-primary">Cancel</a>
+</form>

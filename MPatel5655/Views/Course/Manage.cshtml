@@ -1,0 +1,82 @@
+﻿@model CourseInfoViewModel
+@{
+	string title = "Manage your course";
+}
+<h2>@title</h2>
+
+<div class="mb-2">
+
+	<a asp-controller="Course" asp-action="All"> All Course</a>
+	<a asp-controller="Course" asp-action="Add"> Add Course</a>
+	<a asp-controller="Course" asp-action="Edit"> Edit Course</a>
+
+	<h6><b>Course summary: </b></h6>
+
+	@if (Model == null)
+	{
+		<p>Course informatino is not avalible</p>
+	}
+	else
+	{
+		<p>The course "@Model.Course.Name" is in room @Model.Course.RoomNumber starting on @Model.Course.Date.ToString("MM/dd/yyyy") and the instructor is "@Model.Course.Instuctor". </p>
+		<p>Invites not sent: @Model.Course.Students.Count(s=>s.Status == Student.EnrollmentStatus.ConfirmationMessageNotSent)
+			Send count: @Model.Course.Students.Count(s=>s.Status == Student.EnrollmentStatus.ConfirmationMessageSent)
+			Confirmed count: @Model.Course.Students.Count(s=>s.Status == Student.EnrollmentStatus.EnrollmentConfirmed)
+			Declined count: @Model.Course.Students.Count(s=>s.Status == Student.EnrollmentStatus.EnrollmentDeclined)
+		</p>
+
+		@if (Model.Course.Students != null && Model.Course.Students.Any())
+		{
+			<h6><b>Students: </b></h6>
+
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Enrollment status</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var student in Model.Course.Students)
+					{
+						<tr>
+							<td>@student.Name</td>
+							<td>@student.Email</td>
+							<td>@student.Status</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p>No students yet - you should add some!</p>
+		}
+		<form asp-controller="Course" asp-action="Manage" method="post">
+			<div asp-validation-summary="All" class="text-danger"></div>
+
+			<input type="hidden" name="courseId" value="@Model.Course.Id" />
+			<div class="container">
+
+				<div class="row">
+					<div class="col-md-4 mb-3">
+						<label asp-for="NewStudent.Name" class="form-lable">Student Name:</label>
+						<input asp-for="NewStudent.Name" class="form-control" />
+					</div>
+					<div class="col-md-4 mb-3">
+						<label asp-for="NewStudent.Email" class="form-label">Email:</label>
+						<input asp-for="NewStudent.Email" class="form-control" />
+					</div>
+					<div class="col-md-4 mb-3">
+						<button type="submit" class="btn btn-primary">Add</button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<h6><b>Actions: </b></h6>
+		<a asp-controller="Course" asp-action="SendEmailToAll" asp-route-courseId="@Model.Course.Id" class="btn btn-primary">Send confirmation messages</a>
+
+	}
+</div>

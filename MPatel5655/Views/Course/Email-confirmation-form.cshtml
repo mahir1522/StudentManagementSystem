@@ -1,0 +1,35 @@
+﻿@model CourseInfoViewModel
+@{
+	string title = "Confirmation page";
+}
+<h1>Confirmation response</h1>
+
+@if (Model == null)
+{
+	<p>Error</p>
+}
+else
+{
+	<b>You have been invited to enroll in the "@Model.Course.Name" course!</b>
+	<p>Hey @Model.NewStudent.Name, you have been invited to enroll in the "@Model.Course.Name" in room @Model.Course.RoomNumber starting on @Model.Course.Date with instructor @Model.Course.Instuctor - we would be thrilled to have join us but ask that you confirm your enrollment!</p>
+}
+<br />
+
+
+<form asp-controller="Course" asp-action="SubmitEnrollment" method="post">
+
+	<input type="hidden" name="courseId" value="@Model.Course.Id" />
+	<input type="hidden" name="studentId" value="@Model.NewStudent.S_Id" />
+
+	<label for="enrollmentYes">Yes</label>
+	<input type="radio" id="enrollmentYes" name="enrollmentStatus" value="Yes" required />
+
+	<label for="enrollmentNo">No</label>
+	<input type="radio" id="enrollmentNo" name="enrollmentStatus" value="No" required />
+
+	<button type="submit">Submit</button>
+
+
+</form> 
+
+
